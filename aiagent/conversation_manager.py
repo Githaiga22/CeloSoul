@@ -248,7 +248,12 @@ class ConversationManager:
             "hobbies": ["hobby", "interest", "activity", "fun", "enjoy"],
             "movies": ["movie", "film", "cinema", "netflix", "watch"],
             "sports": ["sport", "game", "team", "player", "match"],
-            "books": ["book", "read", "author", "novel", "story"]
+            "books": ["book", "read", "author", "novel", "story"],
+            "defi": ["defi", "yield", "farming", "liquidity", "protocol", "dex", "uniswap", "compound"],
+            "nft": ["nft", "token", "collection", "mint", "opensea", "digital art", "blockchain art"],
+            "coding": ["code", "programming", "smart contract", "solidity", "javascript", "python", "github"],
+            "crypto": ["crypto", "bitcoin", "ethereum", "trading", "hodl", "altcoin", "wallet"],
+            "blockchain": ["blockchain", "web3", "dapp", "dao", "consensus", "mining", "validator"]
         }
         
         all_content = " ".join([msg.content.lower() for msg in messages])

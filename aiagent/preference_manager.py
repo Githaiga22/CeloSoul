@@ -7,7 +7,8 @@ from datetime import datetime
 
 from models import (
     UserPreferences, UserProfile, PersonalityType, MusicGenre, 
-    BehaviorSignal, FlirtingStyle
+    BehaviorSignal, FlirtingStyle, Web3Preferences, BlockchainChain,
+    TradingStyle, Web3Experience, ProgrammingLanguage
 )
 
 class PreferenceManager:
@@ -117,6 +118,16 @@ class PreferenceManager:
             
             if any(word in bio for word in ["serious", "focused", "career", "goals"]):
                 behavior_signals.append(BehaviorSignal.SERIOUS)
+            
+            # Detect Web3/tech signals
+            if any(word in bio for word in ["smart contract", "blockchain", "defi", "nft", "crypto", "solidity"]):
+                behavior_signals.append(BehaviorSignal.WEB3_ENTHUSIAST)
+            
+            if any(word in bio for word in ["code", "programming", "github", "tech", "developer"]):
+                behavior_signals.append(BehaviorSignal.TECH_SAVVY)
+            
+            if any(word in bio for word in ["algorithm", "data", "analysis", "technical", "nerd"]):
+                behavior_signals.append(BehaviorSignal.NERDY)
         
         return list(set(behavior_signals))  # Remove duplicates
     
@@ -130,7 +141,13 @@ class PreferenceManager:
             "music_genres": [],
             "hobbies": [],
             "personality_types": [],
-            "lifestyle_preferences": []
+            "lifestyle_preferences": [],
+            "web3_preferences": {
+                "favorite_chains": [],
+                "programming_languages": [],
+                "nft_interests": [],
+                "web3_communities": []
+            }
         }
         
         bio = profile.get("bio", "").lower()
@@ -194,6 +211,46 @@ class PreferenceManager:
             if lifestyle in bio:
                 extracted["lifestyle_preferences"].append(lifestyle)
         
+        # Web3 preference detection
+        blockchain_keywords = {
+            "celo": ["celo", "celo ecosystem", "celo dapp"],
+            "ethereum": ["ethereum", "eth", "mainnet", "layer 1"],
+            "polygon": ["polygon", "matic", "layer 2"],
+            "arbitrum": ["arbitrum", "arb"],
+            "optimism": ["optimism", "op"],
+            "solana": ["solana", "sol"],
+            "avalanche": ["avalanche", "avax"],
+            "cosmos": ["cosmos", "atom"]
+        }
+        
+        for chain, keywords in blockchain_keywords.items():
+            if any(keyword in bio for keyword in keywords):
+                extracted["web3_preferences"]["favorite_chains"].append(chain)
+        
+        # Programming language detection
+        programming_keywords = {
+            "solidity": ["solidity", "smart contract", "ethereum development"],
+            "javascript": ["javascript", "js", "node.js", "react"],
+            "python": ["python", "py", "django", "flask"],
+            "rust": ["rust", "solana development"],
+            "go": ["go", "golang", "cosmos development"]
+        }
+        
+        for lang, keywords in programming_keywords.items():
+            if any(keyword in bio for keyword in keywords):
+                extracted["web3_preferences"]["programming_languages"].append(lang)
+        
+        # NFT interests detection
+        nft_keywords = ["nft", "non-fungible", "digital art", "opensea", "collection"]
+        if any(keyword in bio for keyword in nft_keywords):
+            extracted["web3_preferences"]["nft_interests"].append("art")
+        
+        # Web3 community detection
+        community_keywords = ["gitcoin", "dappcon", "ethglobal", "hackathon", "dao", "governance"]
+        for keyword in community_keywords:
+            if keyword in bio:
+                extracted["web3_preferences"]["web3_communities"].append(keyword)
+        
         return extracted
     
     def create_flirting_style_preferences(
@@ -212,6 +269,71 @@ class PreferenceManager:
             directness=directness,
             emoji_usage=emoji_usage,
             topics=preferred_topics or []
+        )
+    
+    def create_web3_preferences(
+        self,
+        favorite_chains: List[str] = None,
+        trading_style: str = None,
+        defi_experience: str = "beginner",
+        nft_interests: List[str] = None,
+        programming_languages: List[str] = None,
+        dev_frameworks: List[str] = None,
+        preferred_ide: str = None,
+        web3_communities: List[str] = None,
+        conference_attendance: List[str] = None,
+        mentorship_interest: str = "both",
+        crypto_portfolio_size: str = None,
+        risk_tolerance: str = "moderate",
+        investment_philosophy: List[str] = None
+    ) -> Web3Preferences:
+        """Create Web3 preferences from provided data"""
+        
+        # Convert string enums to proper enum types
+        chain_enums = []
+        if favorite_chains:
+            for chain in favorite_chains:
+                try:
+                    chain_enums.append(BlockchainChain(chain.lower()))
+                except ValueError:
+                    continue
+        
+        trading_style_enum = None
+        if trading_style:
+            try:
+                trading_style_enum = TradingStyle(trading_style.lower())
+            except ValueError:
+                pass
+        
+        defi_experience_enum = Web3Experience.BEGINNER
+        if defi_experience:
+            try:
+                defi_experience_enum = Web3Experience(defi_experience.lower())
+            except ValueError:
+                pass
+        
+        lang_enums = []
+        if programming_languages:
+            for lang in programming_languages:
+                try:
+                    lang_enums.append(ProgrammingLanguage(lang.lower()))
+                except ValueError:
+                    continue
+        
+        return Web3Preferences(
+            favorite_chains=chain_enums,
+            trading_style=trading_style_enum,
+            defi_experience=defi_experience_enum,
+            nft_interests=nft_interests or [],
+            programming_languages=lang_enums,
+            dev_frameworks=dev_frameworks or [],
+            preferred_ide=preferred_ide,
+            web3_communities=web3_communities or [],
+            conference_attendance=conference_attendance or [],
+            mentorship_interest=mentorship_interest,
+            crypto_portfolio_size=crypto_portfolio_size,
+            risk_tolerance=risk_tolerance,
+            investment_philosophy=investment_philosophy or []
         )
     
     def update_preferences_from_interaction(

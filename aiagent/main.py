@@ -57,6 +57,7 @@ class CreateUserRequest(BaseModel):
     lifestyle_preferences: List[str] = []
     deal_breakers: List[str] = []
     must_haves: List[str] = []
+    web3_preferences: Optional[Dict[str, Any]] = None
 
 class ChatRequest(BaseModel):
     conversation_id: str
@@ -110,6 +111,10 @@ async def create_user(request: CreateUserRequest):
             deal_breakers=request.deal_breakers,
             must_haves=request.must_haves
         )
+        
+        # Add Web3 preferences if provided
+        if hasattr(request, 'web3_preferences') and request.web3_preferences:
+            preferences.web3_preferences = preference_manager.create_web3_preferences(**request.web3_preferences)
         
         # Create user profile
         profile = UserProfile(
@@ -203,7 +208,11 @@ async def create_conversation(
             intensity=flirting_style.get("intensity", "moderate"),
             humor_level=flirting_style.get("humor_level", "medium"),
             directness=flirting_style.get("directness", "balanced"),
-            emoji_usage=flirting_style.get("emoji_usage", "moderate")
+            emoji_usage=flirting_style.get("emoji_usage", "moderate"),
+            tech_level=flirting_style.get("tech_level", "balanced"),
+            web3_knowledge=flirting_style.get("web3_knowledge", "intermediate"),
+            crypto_enthusiasm=flirting_style.get("crypto_enthusiasm", "moderate"),
+            nerd_factor=flirting_style.get("nerd_factor", "medium")
         )
         
         # Create conversation
@@ -244,7 +253,11 @@ async def send_message(request: ChatRequest):
             intensity=style_data.get("intensity", "moderate"),
             humor_level=style_data.get("humor_level", "medium"),
             directness=style_data.get("directness", "balanced"),
-            emoji_usage=style_data.get("emoji_usage", "moderate")
+            emoji_usage=style_data.get("emoji_usage", "moderate"),
+            tech_level=style_data.get("tech_level", "balanced"),
+            web3_knowledge=style_data.get("web3_knowledge", "intermediate"),
+            crypto_enthusiasm=style_data.get("crypto_enthusiasm", "moderate"),
+            nerd_factor=style_data.get("nerd_factor", "medium")
         )
         
         # Generate AI response
@@ -281,12 +294,20 @@ async def generate_conversation_starters(
 ):
     """Generate conversation starters for a match"""
     try:
+        # Debug: Print the request data
+        print(f"DEBUG: match_profile data: {request.match_profile}")
+        print(f"DEBUG: compatibility_score in data: {request.match_profile.get('compatibility_score')}")
+        
         # Create flirting style
         flirting_style = FlirtingStyle(
             intensity=request.flirting_style.get("intensity", "moderate"),
             humor_level=request.flirting_style.get("humor_level", "medium"),
             directness=request.flirting_style.get("directness", "balanced"),
-            emoji_usage=request.flirting_style.get("emoji_usage", "moderate")
+            emoji_usage=request.flirting_style.get("emoji_usage", "moderate"),
+            tech_level=request.flirting_style.get("tech_level", "balanced"),
+            web3_knowledge=request.flirting_style.get("web3_knowledge", "intermediate"),
+            crypto_enthusiasm=request.flirting_style.get("crypto_enthusiasm", "moderate"),
+            nerd_factor=request.flirting_style.get("nerd_factor", "medium")
         )
         
         # Create match profile
@@ -296,7 +317,10 @@ async def generate_conversation_starters(
             age=request.match_profile.get("age", 0),
             location=request.match_profile.get("location", ""),
             bio=request.match_profile.get("bio", ""),
-            photos=request.match_profile.get("photos", [])
+            photos=request.match_profile.get("photos", []),
+            compatibility_score=request.match_profile.get("compatibility_score", 0.8),
+            match_reasons=[],
+            conversation_starters=[]
         )
         
         # Create user preferences
