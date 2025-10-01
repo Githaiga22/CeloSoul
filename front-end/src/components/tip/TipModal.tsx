@@ -5,18 +5,19 @@ import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { TIP_PRESETS } from '../../lib/constants';
-import { getCUSDAddress, getContractAddress, getExplorerUrl, parseCUSD, ERC20_ABI, CELOSOUL_PAYMENTS_ABI } from '../../lib/celo';
+import { parseCUSD, ERC20_ABI } from '../../lib/celo';
 
 interface TipModalProps {
   isOpen: boolean;
   onClose: () => void;
   recipientId: string;
   recipientName: string;
+  onSuccess?: () => void;
 }
 
 type TipStatus = 'idle' | 'confirming' | 'pending' | 'success' | 'error';
 
-export function TipModal({ isOpen, onClose, recipientId, recipientName }: TipModalProps) {
+export function TipModal({ isOpen, onClose, recipientName, onSuccess }: TipModalProps) {
   const { address, chain } = useAccount();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
@@ -35,27 +36,23 @@ export function TipModal({ isOpen, onClose, recipientId, recipientName }: TipMod
     setError(null);
 
     try {
-      // For MVP, assume recipientId is the wallet address
-      const recipientAddress = recipientId as `0x${string}`;
-      const cUSDAddress = getCUSDAddress(chain.id);
-      const contractAddress = getContractAddress(chain.id);
+      // Hardcoded recipient address for tips
+      const recipientAddress = '0x395358d1236D01de9193b1F3AEB61A1ACb2Af2b9' as `0x${string}`;
+      const cUSDAddress = '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1' as `0x${string}`;
       const amountInWei = parseCUSD(amount.toString());
-
-      // First approve the contract to spend cUSD
-      const approveHash = await walletClient.writeContract({
-        address: cUSDAddress,
-        abi: ERC20_ABI,
-        functionName: 'approve',
-        args: [contractAddress, amountInWei],
+      
+      console.log('Sending tip:', {
+        recipient: recipientAddress,
+        amount: amount,
+        amountInWei: amountInWei.toString(),
+        cUSDAddress
       });
 
-      await publicClient.waitForTransactionReceipt({ hash: approveHash });
-
-      // Then call the tip function on the contract
+      // Direct cUSD transfer to recipient
       const hash = await walletClient.writeContract({
-        address: contractAddress,
-        abi: CELOSOUL_PAYMENTS_ABI,
-        functionName: 'tip',
+        address: cUSDAddress,
+        abi: ERC20_ABI,
+        functionName: 'transfer',
         args: [recipientAddress, amountInWei],
       });
 
@@ -69,8 +66,12 @@ export function TipModal({ isOpen, onClose, recipientId, recipientName }: TipMod
 
       if (receipt.status === 'success') {
         console.log('Tip confirmed:', hash);
-
         setStatus('success');
+        
+        // Call success callback after a short delay
+        setTimeout(() => {
+          onSuccess?.();
+        }, 2000);
       } else {
         throw new Error('Transaction failed');
       }
@@ -172,9 +173,9 @@ export function TipModal({ isOpen, onClose, recipientId, recipientName }: TipMod
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg font-medium text-secondary-900">Processing transaction</p>
           <p className="text-sm text-secondary-600">This may take a few moments...</p>
-          {txHash && chain && (
+          {txHash && (
             <a
-              href={getExplorerUrl(chain.id, txHash)}
+              href={`https://sepolia.celoscan.io/tx/${txHash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 text-sm"
@@ -193,9 +194,9 @@ export function TipModal({ isOpen, onClose, recipientId, recipientName }: TipMod
           <p className="text-sm text-secondary-600">
             ${amount.toFixed(2)} cUSD has been sent to {recipientName}
           </p>
-          {txHash && chain && (
+          {txHash && (
             <a
-              href={getExplorerUrl(chain.id, txHash)}
+              href={`https://sepolia.celoscan.io/tx/${txHash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 text-sm"
