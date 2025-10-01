@@ -34,7 +34,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUser = async (walletAddress: string) => {
     // Check if user has completed profile onboarding
-    const hasCompletedProfile = localStorage.getItem(`profile_completed_${walletAddress.toLowerCase()}`);
+    const profileKey = `celosoul_profile_${walletAddress.toLowerCase()}`;
+    const hasCompletedProfile = localStorage.getItem(profileKey) || localStorage.getItem(`profile_completed_${walletAddress.toLowerCase()}`);
     
     return {
       id: walletAddress.toLowerCase(),
@@ -67,14 +68,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     try {
       const testUserId = `test-${email}`;
+      const profileKey = `celosoul_profile_${testUserId}`;
+      const hasCompletedProfile = localStorage.getItem(profileKey) || localStorage.getItem(`profile_completed_${testUserId}`);
+      
       const mockUser = {
         id: testUserId,
         wallet_address: testUserId,
         display_name: email.split('@')[0],
-        bio: 'Test mode user',
+        bio: hasCompletedProfile ? 'Test mode user' : '',
         avatar_url: null,
         date_of_birth: null,
-        interests: ['Testing', 'Demo'],
+        interests: hasCompletedProfile ? ['Testing', 'Demo'] : [],
+        profileCompleted: !!hasCompletedProfile,
       };
       
       setUser(mockUser);
