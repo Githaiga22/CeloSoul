@@ -77,6 +77,7 @@ export const CELOSOUL_PAYMENTS_ABI = [
 ] as const;
 
 const SEPOLIA_CHAIN_ID = 11142220;
+const MAINNET_CHAIN_ID = 42220;
 
 export function getCUSDAddress(chainId: number): `0x${string}` {
   if (chainId === SEPOLIA_CHAIN_ID) {
@@ -94,7 +95,10 @@ export function getContractAddress(chainId: number): `0x${string}` {
   return CONTRACT_ADDRESSES.MAINNET.CeloSoulPayments as `0x${string}`;
 }
 
-export function getExplorerUrl(_chainId: number, txHash: string): string {
+export function getExplorerUrl(chainId: number, txHash: string): string {
+  if (chainId === MAINNET_CHAIN_ID) {
+    return `https://celoscan.io/tx/${txHash}`;
+  }
   return `https://sepolia.celoscan.io/tx/${txHash}`;
 }
 
