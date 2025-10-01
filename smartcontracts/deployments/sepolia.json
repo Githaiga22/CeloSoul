@@ -1,0 +1,11 @@
+{
+  "address": "0xEc2B9dde309737CCaeC137939aCb4f8524876D1d",
+  "constructorArgs": [
+    "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
+    "500000000000000000"
+  ],
+  "network": "sepolia",
+  "deployer": "0x4B359D10c05b8615B437AA76bD4A5aEef4FdDE9F",
+  "timestamp": "2025-10-01T16:09:13.275Z",
+  "txHash": "0x6f25ec2291ad0742b1cb2c7801216d69a5c278df0c2252490bdf7c6f863863c1"
+}
