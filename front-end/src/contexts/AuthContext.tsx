@@ -9,6 +9,7 @@ interface User {
   avatar_url: string | null;
   date_of_birth: string | null;
   interests: string[];
+  profileCompleted?: boolean;
 }
 
 interface AuthContextType {
@@ -19,6 +20,7 @@ interface AuthContextType {
   loginTestMode: (email: string) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
+  completeProfile: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,15 +33,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { disconnect } = useDisconnect();
 
   const fetchUser = async (walletAddress: string) => {
-    // Mock user data for MVP
+    // Check if user has completed profile onboarding
+    const hasCompletedProfile = localStorage.getItem(`profile_completed_${walletAddress.toLowerCase()}`);
+    
     return {
       id: walletAddress.toLowerCase(),
       wallet_address: walletAddress.toLowerCase(),
       display_name: `User ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`,
-      bio: 'Web3 developer and crypto enthusiast',
+      bio: hasCompletedProfile ? 'Web3 developer and crypto enthusiast' : '',
       avatar_url: null,
       date_of_birth: null,
-      interests: ['Crypto', 'DeFi', 'Technology'],
+      interests: hasCompletedProfile ? ['Crypto', 'DeFi', 'Technology'] : [],
+      profileCompleted: !!hasCompletedProfile,
     };
   };
 
@@ -111,6 +116,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const completeProfile = () => {
+    if (user) {
+      const identifier = user.wallet_address || user.id;
+      localStorage.setItem(`profile_completed_${identifier}`, 'true');
+      setUser({ ...user, profileCompleted: true });
+    }
+  };
+
   // Handle wallet disconnection
   useEffect(() => {
     if (!isConnected && user && !isTestMode) {
@@ -172,6 +185,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginTestMode,
         logout,
         refreshUser,
+        completeProfile,
       }}
     >
       {children}
