@@ -202,7 +202,7 @@ npm run verify:mainnet  # Verify on Celoscan
 
 CeloSoul showcases the potential of combining AI innovation with blockchain technology to solve real-world problems. By focusing on authentic human connections in the Web3 space, we're pioneering a new category of decentralized social applications.
 
-**Experience the future of dating at [CeloSoul.app](https://celosoul.app)** 💖
+**Experience the future of dating at [CeloSoul.vercel.app](https://celo-soul.vercel.app/)** 💖
 
 ## 👥 **Contributors**
 
