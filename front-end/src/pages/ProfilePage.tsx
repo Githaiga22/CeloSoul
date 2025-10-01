@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Edit, Settings, LogOut, Wallet, Heart } from 'lucide-react';
+import { Edit, Settings, LogOut, Wallet, Heart, Star, Crown } from 'lucide-react';
 import { useAccount, useBalance } from 'wagmi';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { ProfileEditModal } from '../components/profile/ProfileEditModal';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../hooks/useSubscription';
 import { getCUSDAddress } from '../lib/celo';
 
 export function ProfilePage() {
   const { user, logout, isTestMode } = useAuth();
   const { address, chain } = useAccount();
+  const { tipsGiven, hasActiveSubscription } = useSubscription();
   const navigate = useNavigate();
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -150,19 +152,28 @@ export function ProfilePage() {
             </h3>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-2 gap-4 text-center mb-4">
             <div>
-              <p className="text-2xl font-bold text-secondary-900">0</p>
+              <p className="text-2xl font-bold text-secondary-900">12</p>
               <p className="text-sm text-secondary-600">Matches</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-secondary-900">0</p>
-              <p className="text-sm text-secondary-600">Tips Sent</p>
+              <Star className="w-6 h-6 text-yellow-500 mx-auto mb-1" />
+              <p className="text-2xl font-bold text-secondary-900">{tipsGiven}</p>
+              <p className="text-sm text-secondary-600">Tips Given</p>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-secondary-900">0</p>
-              <p className="text-sm text-secondary-600">Tips Received</p>
+          </div>
+          
+          <div className="bg-secondary-50 rounded-lg p-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Crown className={`w-5 h-5 ${hasActiveSubscription ? 'text-yellow-500' : 'text-gray-400'}`} />
+              <span className={`font-semibold ${hasActiveSubscription ? 'text-green-600' : 'text-gray-600'}`}>
+                {hasActiveSubscription ? 'Premium Active' : 'Free Plan'}
+              </span>
             </div>
+            <p className="text-xs text-secondary-500">
+              {hasActiveSubscription ? 'Enjoying unlimited features' : 'Upgrade for more swipes'}
+            </p>
           </div>
         </Card>
 
