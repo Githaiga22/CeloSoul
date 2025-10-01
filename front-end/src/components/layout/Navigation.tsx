@@ -1,8 +1,14 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Heart, MessageSquare, User, Sparkles } from 'lucide-react';
+import { Heart, MessageSquare, User, Sparkles, Crown } from 'lucide-react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { SubscriptionModal } from '../subscription/SubscriptionModal';
+import { useSubscription } from '../../hooks/useSubscription';
 
 export function Navigation() {
+  const { plans, purchaseSubscription } = useSubscription();
+  const [showPricingModal, setShowPricingModal] = useState(false);
+  
   const navItems = [
     { to: '/app/discover', icon: Sparkles, label: 'Discover' },
     { to: '/app/matches', icon: MessageSquare, label: 'Matches' },
@@ -38,6 +44,13 @@ export function Navigation() {
                   <span>{item.label}</span>
                 </NavLink>
               ))}
+              <button
+                onClick={() => setShowPricingModal(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl transition-colors font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
+              >
+                <Crown className="w-5 h-5" />
+                <span>Pricing</span>
+              </button>
             </nav>
 
             <div className="hidden md:block">
@@ -67,6 +80,16 @@ export function Navigation() {
           ))}
         </div>
       </nav>
+
+      <SubscriptionModal
+        isOpen={showPricingModal}
+        onClose={() => setShowPricingModal(false)}
+        plans={plans}
+        onPurchase={(planId) => {
+          purchaseSubscription(planId);
+          setShowPricingModal(false);
+        }}
+      />
     </>
   );
 }
