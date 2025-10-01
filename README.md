@@ -5,6 +5,11 @@
 [![Celo Mainnet](https://img.shields.io/badge/Celo-Mainnet-brightgreen)](https://celoscan.io/address/0xEc2B9dde309737CCaeC137939aCb4f8524876D1d)
 [![Smart Contract](https://img.shields.io/badge/Contract-Verified-blue)](https://celoscan.io/address/0xEc2B9dde309737CCaeC137939aCb4f8524876D1d#code)
 
+## 🎨 **Platform Preview**
+
+![CeloSoul Landing Page](./public/Landingpage.png)
+
+*Experience the future of Web3 dating with CeloSoul's intuitive interface and AI-powered matching*
 
 ## 🌟 **Revolutionary Features**
 
