@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Heart, X, Sparkles, MessageCircle } from 'lucide-react';
+import { Heart, X, Sparkles, MessageCircle, Star } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -19,9 +19,10 @@ interface ProfileCardProps {
   onApprove: () => void;
   onReject: () => void;
   onSkip: () => void;
+  onSuperLike: () => void;
 }
 
-export function ProfileCard({ candidate, onApprove, onReject, onSkip }: ProfileCardProps) {
+export function ProfileCard({ candidate, onApprove, onReject, onSkip, onSuperLike }: ProfileCardProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
@@ -148,34 +149,47 @@ export function ProfileCard({ candidate, onApprove, onReject, onSkip }: ProfileC
             </div>
           )}
 
-          <div className="flex gap-3 pt-4">
+          <div className="space-y-3 pt-4">
             <Button
-              variant="danger"
+              variant="primary"
               size="lg"
-              onClick={onReject}
-              className="flex-1"
-              aria-label="Reject"
+              onClick={onSuperLike}
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold"
+              aria-label="Super Like"
             >
-              <X className="w-6 h-6" />
+              <Star className="w-5 h-5 mr-2" />
+              Super Like (Tip)
             </Button>
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={onSkip}
-              className="px-6"
-              aria-label="Skip"
-            >
-              Skip
-            </Button>
-            <Button
-              variant="success"
-              size="lg"
-              onClick={onApprove}
-              className="flex-1"
-              aria-label="Approve"
-            >
-              <Heart className="w-6 h-6" />
-            </Button>
+            
+            <div className="flex gap-3">
+              <Button
+                variant="danger"
+                size="lg"
+                onClick={onReject}
+                className="flex-1"
+                aria-label="Reject"
+              >
+                <X className="w-6 h-6" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={onSkip}
+                className="px-6"
+                aria-label="Skip"
+              >
+                Skip
+              </Button>
+              <Button
+                variant="success"
+                size="lg"
+                onClick={onApprove}
+                className="flex-1"
+                aria-label="Approve"
+              >
+                <Heart className="w-6 h-6" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
