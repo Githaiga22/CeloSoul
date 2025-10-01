@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { loadProfile } from '../lib/localCache';
+import { useAuth } from '../contexts/AuthContext';
 
 interface MatchCandidate {
   id: string;
@@ -50,6 +52,7 @@ const mockCandidates: MatchCandidate[] = [
 ];
 
 export function useMatchCandidates() {
+  const { user } = useAuth();
   const [candidates, setCandidates] = useState<MatchCandidate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,9 +62,23 @@ export function useMatchCandidates() {
     setError(null);
     
     try {
+      // Check for cached profile to personalize matches
+      const addressKey = user?.wallet_address || 'dev';
+      const cachedProfile = loadProfile(addressKey);
+      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      setCandidates(mockCandidates);
+      
+      // Use cached profile interests to enhance mock data if available
+      let enhancedCandidates = mockCandidates;
+      if (cachedProfile?.interests?.length) {
+        enhancedCandidates = mockCandidates.map(candidate => ({
+          ...candidate,
+          match_reason: `You both share interests in ${cachedProfile.interests.slice(0, 2).join(' and ')}. ${candidate.match_reason}`
+        }));
+      }
+      
+      setCandidates(enhancedCandidates);
     } catch (err) {
       setError('Failed to load candidates');
     } finally {
