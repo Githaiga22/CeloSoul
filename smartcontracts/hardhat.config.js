@@ -12,23 +12,21 @@ module.exports = {
     }
   },
   networks: {
-    alfajores: {
-      url: process.env.ALFAJORES_RPC_URL || "https://alfajores-forno.celo-testnet.org",
+    sepolia: {
+      url: process.env.SEPOLIA_RPC_URL || "https://rpc.ankr.com/celo_sepolia",
       accounts: (process.env.PRIVATE_KEY && process.env.PRIVATE_KEY !== "your_private_key_here") ? [process.env.PRIVATE_KEY] : [],
-      chainId: 44787
+      chainId: 11142220
     }
   },
   etherscan: {
-    apiKey: {
-      alfajores: "dummy" // Celo doesn't require API key
-    },
+    apiKey: process.env.CELOSCAN_API_KEY || "dummy",
     customChains: [
       {
-        network: "alfajores",
-        chainId: 44787,
+        network: "sepolia",
+        chainId: 11142220,
         urls: {
-          apiURL: "https://api-alfajores.celoscan.io/api",
-          browserURL: "https://alfajores.celoscan.io"
+          apiURL: "https://api-sepolia.celoscan.io/api",
+          browserURL: "https://sepolia.celoscan.io"
         }
       }
     ]
