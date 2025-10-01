@@ -1,0 +1,76 @@
+# CeloSoul AI Agent - Additional Git Ignore
+
+# Environment files
+.env
+.env.*
+*.env
+
+# API Keys & Secrets
+api_keys.txt
+secrets.json
+credentials.json
+config_local.py
+
+# Logs & Debug files
+*.log
+debug.log
+error.log
+ai_agent.log
+
+# Conversation data (if stored locally)
+conversations/
+chat_history/
+user_data/
+*.conversation
+
+# Model cache
+.cache/
+model_cache/
+*.cache
+
+# Test outputs
+test_results/
+test_outputs/
+sample_conversations/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+
+# User uploads
+uploads/
+profiles/
+photos/
+user_photos/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Local development files
+local_*
+dev_*
+debug_*
+
+# Performance monitoring
+*.prof
+performance.log
+
+# AI model files
+*.pkl
+*.joblib
+*.h5
+*.model
+*.weights
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration overrides
+config_override.py
+local_config.py
