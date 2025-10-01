@@ -1,5 +1,5 @@
 import { parseUnits, formatUnits } from 'viem';
-import { TOKEN_ADDRESSES, CUSD_DECIMALS, CELO_CHAINS, CONTRACT_ADDRESSES } from './constants';
+import { TOKEN_ADDRESSES, CUSD_DECIMALS, CONTRACT_ADDRESSES } from './constants';
 
 export const ERC20_ABI = [
   {
@@ -32,6 +32,17 @@ export const ERC20_ABI = [
 ] as const;
 
 export const CELOSOUL_PAYMENTS_ABI = [
+  {
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+      { name: 'message', type: 'string' }
+    ],
+    name: 'sendTip',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
   {
     inputs: [
       { name: 'to', type: 'address' },
@@ -74,16 +85,17 @@ export function getCUSDAddress(chainId: number): `0x${string}` {
   return TOKEN_ADDRESSES.MAINNET.cUSD as `0x${string}`;
 }
 
+export const CELOSOUL_PAYMENTS_ADDRESS = '0xEc2B9dde309737CCaeC137939aCb4f8524876D1d' as const;
+
 export function getContractAddress(chainId: number): `0x${string}` {
   if (chainId === SEPOLIA_CHAIN_ID) {
-    return CONTRACT_ADDRESSES.SEPOLIA.CeloSoulPayments as `0x${string}`;
+    return CELOSOUL_PAYMENTS_ADDRESS;
   }
   return CONTRACT_ADDRESSES.MAINNET.CeloSoulPayments as `0x${string}`;
 }
 
-export function getExplorerUrl(chainId: number, txHash: string): string {
-  const chain = chainId === SEPOLIA_CHAIN_ID ? CELO_CHAINS.SEPOLIA : CELO_CHAINS.MAINNET;
-  return `${chain.blockExplorer}/tx/${txHash}`;
+export function getExplorerUrl(_chainId: number, txHash: string): string {
+  return `https://sepolia.celoscan.io/tx/${txHash}`;
 }
 
 export function parseCUSD(amount: string): bigint {
