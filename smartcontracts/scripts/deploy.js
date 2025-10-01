@@ -28,7 +28,7 @@ async function main() {
   const deploymentInfo = {
     address: contractAddress,
     constructorArgs: [cusdAddress, platformFee.toString()],
-    network: "alfajores",
+    network: "sepolia",
     deployer: deployer.address,
     timestamp: new Date().toISOString(),
     txHash: contract.deploymentTransaction().hash
@@ -40,15 +40,15 @@ async function main() {
   }
 
   fs.writeFileSync(
-    path.join(deploymentsDir, "alfajores.json"),
+    path.join(deploymentsDir, "sepolia.json"),
     JSON.stringify(deploymentInfo, null, 2)
   );
 
-  console.log("Deployment info saved to deployments/alfajores.json");
+  console.log("Deployment info saved to deployments/sepolia.json");
   console.log("\nNext steps:");
   console.log("1. Wait 2-3 minutes for block confirmations");
   console.log("2. Run: npm run verify");
-  console.log("3. Contract will be available at:", `https://alfajores.celoscan.io/address/${contractAddress}`);
+  console.log("3. Contract will be available at:", `https://sepolia.celoscan.io/address/${contractAddress}`);
 }
 
 main()
