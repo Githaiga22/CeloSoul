@@ -8,7 +8,7 @@ export const CELO_CHAINS = {
   MAINNET: {
     id: 42220,
     name: 'Celo Mainnet',
-    rpcUrl: 'https://forno.celo.org',
+    rpcUrl: 'https://celo-json-rpc.stakely.io',
     blockExplorer: 'https://celoscan.io',
   },
 } as const;
@@ -30,7 +30,7 @@ export const CONTRACT_ADDRESSES = {
     CeloSoulPayments: '0xEc2B9dde309737CCaeC137939aCb4f8524876D1d',
   },
   MAINNET: {
-    CeloSoulPayments: '', // Deploy to mainnet later
+    CeloSoulPayments: '', // Will be updated after mainnet deployment
   },
 } as const;
 
