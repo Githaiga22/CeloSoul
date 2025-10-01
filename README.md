@@ -204,6 +204,18 @@ CeloSoul showcases the potential of combining AI innovation with blockchain tech
 
 **Experience the future of dating at [CeloSoul.app](https://celosoul.app)** 💖
 
+## 👥 **Contributors**
+
+**Team DaringX** - Building the future of Web3 social connections
+
+### **Core Team**
+
+**Allan Robinson** - Lead Developer & Blockchain Engineer  
+🐦 [X/Twitter](https://x.com/robinsoncodes) | 🔗 [GitHub](https://github.com/githaiga22)
+
+**Hazard Krypto** - Full-Stack Developer & Web3 Specialist  
+🐦 [X/Twitter](https://x.com/HazardKrypto) | 🔗 [GitHub](https://github.com/iBrainiac)
+
 ---
 
 *Built with ❤️ on Celo blockchain - Where technology meets human connection*
