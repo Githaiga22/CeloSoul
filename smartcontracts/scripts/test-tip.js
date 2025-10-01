@@ -6,7 +6,7 @@ async function main() {
   const [sender] = await ethers.getSigners();
   
   // Load deployment
-  const deploymentPath = path.join(__dirname, "..", "deployments", "alfajores.json");
+  const deploymentPath = path.join(__dirname, "..", "deployments", "sepolia.json");
   const deployment = JSON.parse(fs.readFileSync(deploymentPath, "utf8"));
   
   // Contract instances
