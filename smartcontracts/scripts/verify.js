@@ -4,7 +4,7 @@ const path = require("path");
 
 async function main() {
   // Load deployment info
-  const deploymentPath = path.join(__dirname, "..", "deployments", "alfajores.json");
+  const deploymentPath = path.join(__dirname, "..", "deployments", "sepolia.json");
   
   if (!fs.existsSync(deploymentPath)) {
     console.error("Deployment file not found. Please deploy first.");
@@ -23,7 +23,7 @@ async function main() {
     });
     
     console.log("Contract verified successfully!");
-    console.log("View on Celoscan:", `https://alfajores.celoscan.io/address/${deployment.address}`);
+    console.log("View on Celoscan:", `https://sepolia.celoscan.io/address/${deployment.address}`);
   } catch (error) {
     if (error.message.toLowerCase().includes("already verified")) {
       console.log("Contract already verified!");
