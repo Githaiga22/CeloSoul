@@ -45,7 +45,7 @@ export function createMockAgentResponse(profileId: string): AgentResponse {
     {
       id: 'mock-1',
       name: 'Alex Chen',
-      avatarUrl: null,
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
       bio: 'Full-stack developer passionate about DeFi and sustainable tech. Love hiking and discovering new coffee shops.',
       matchScore: 92,
       reason: 'You both love DeFi and have similar tech backgrounds. Your interests in sustainable technology align perfectly.',
@@ -53,21 +53,21 @@ export function createMockAgentResponse(profileId: string): AgentResponse {
     },
     {
       id: 'mock-2', 
-      name: 'Maya Rodriguez',
-      avatarUrl: null,
-      bio: 'Smart contract auditor by day, NFT artist by night. Building the future of web3 one line of code at a time.',
-      matchScore: 88,
-      reason: 'Both crypto enthusiasts with creative sides. Your technical skills complement each other well.',
-      icebreaker: 'Your profile mentions smart contracts - I\'d love to hear about your latest audit findings!'
+      name: 'Sophia Williams',
+      avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
+      bio: 'UX designer crafting beautiful interfaces for DApps. Coffee addict, bookworm, and weekend photographer.',
+      matchScore: 90,
+      reason: 'Creative minds think alike! Your tech background and her design skills would make a perfect team.',
+      icebreaker: 'I love your approach to user experience! What\'s the most challenging DApp you\'ve designed?'
     },
     {
       id: 'mock-3',
-      name: 'Jordan Kim', 
-      avatarUrl: null,
-      bio: 'Product manager at a web3 startup. Believer in decentralized everything. Weekend warrior and yoga enthusiast.',
-      matchScore: 85,
-      reason: 'Shared passion for web3 and healthy lifestyle. Your product and tech perspectives would create great conversations.',
-      icebreaker: 'I noticed you\'re into yoga too! Have you tried any blockchain-based fitness apps?'
+      name: 'Emma Davis', 
+      avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face',
+      bio: 'DevOps engineer building scalable blockchain infrastructure. Love rock climbing and exploring new cities.',
+      matchScore: 89,
+      reason: 'Both tech enthusiasts who love adventure. Your development skills complement her infrastructure expertise.',
+      icebreaker: 'I see you\'re into rock climbing! Any favorite spots you\'d recommend for a fellow adventurer?'
     }
   ];
 
